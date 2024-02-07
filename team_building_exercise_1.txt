@@ -1,22 +1,17 @@
 
 Hi,
 This is kranthi, I am from Hyderabad, I have two years of experience as a full stack developer.
-
-
 I have no girlfriend.
-
 I love travelling.
-
 I know cooking.
 
+Hi this is Sai Madhava Rao Lakkakula. 
+I love playing chess	
+I'm a Dancer	
+I read books often.
 
--------------------------------------------------------------------------------------------------
-
- Hi this is Sai Madhava Rao Lakkakula. 
-
-1. I love playing chess
-		
-2. I'm a Dancer
-	
-3. I read books often.
+Hi, this is Raunak Khithani
+I love playing chess
+I have scuba dived
+I have a pet dog at home
 

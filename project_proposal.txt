@@ -1,0 +1,17 @@
+Project Title: Class Critique
+
+Project Description: The app would provide Chico State students with a platform to rate, review, and discover information about professors. It aims to empower students to make informed decisions when selecting courses and instructors, thereby enhancing their academic experience. The app allows users to share their opinions, experiences, and insights about professors, facilitating a transparent and community-driven approach to evaluating teaching quality.
+
+Feature Set:
+1.	Login - The students would be able to log in via their CSU Chico accounts.
+2.	Professor Search: Students can search for professors by name, department, or institution (just like the canvas class selection page).
+3.	Rate and review: Students can rate/ review the professors anonymously based on their teaching quality, helpfulness, and teaching methodologies.
+4.	To prevent getting a biased rating, we can limit one rating and review from a student for a particular professor and the course.
+
+Bonus Features:
+TBD
+
+Target Platform:
+Mobile Application: (Android for Phase 1) – Flutter/React Native
+
+
