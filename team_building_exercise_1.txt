@@ -1,31 +1,10 @@
-==============================================================================================================
-Hi Everyone, This is kranthi I am from Hyderabad. I have two years of experience as a full stack developer.
-Looking forward to work together and learn together.
+Hi Everyone, This is Madhav. I am from Hyderabad. Looking forward to work together and learn together.
 
 
 Truth about me.
-	1. I like travelling.
+	1. I love playing chess
 		
-	2. I dont' have a girl friend.
+	2. I'm a Dancer
 	
 Lies About me .
-	1. I went to moon.
-----------------------------------------------------------------------------------------------------------------
-Hello Everyone, My name is very big, so you can just call me venky. I am from hyderabad but my native place is rajamundry. I have 4.5 years of experinece in Automation Testing.
-I want to make our project an actual working model, so that we can actually achieve something.
-
-Truth:
-
-	1. I am a foodie.
-	2. I don't have a girlfriend.
-Lies:
-	1. I met Eminem.
-------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-=======================================================================================================================
-
-Note: Please divide each persons text with a single line and make sure doubled line is always at the end.
+	1. I read books often.
