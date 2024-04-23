@@ -6,28 +6,8 @@ import 'package:flutter/material.dart';
 class LoginScreen extends StatelessWidget {
   
   LoginScreen({super.key});
-
-  //final AuthService _authService = AuthService();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  // Future<void> _login(BuildContext context) async {
-  //   _authService
-  //       .login(email: emailController.text, password: passwordController.text)
-  //       .then((message) {
-  //     // Login successful
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => Home()),
-  //     );
-  //   }).catchError((error) {
-  //     // Login failed
-  //     showDialog(
-  //         context: context,
-  //         builder: (context) =>
-  //             CustomDialog(title: 'Error', message: error.toString()));
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {

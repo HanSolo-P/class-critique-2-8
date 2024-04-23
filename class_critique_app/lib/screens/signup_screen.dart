@@ -6,27 +6,8 @@ class SignupScreen extends StatelessWidget {
   
   SignupScreen({super.key});
 
-  //final AuthService _authService = AuthService();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  // Future<void> _login(BuildContext context) async {
-  //   _authService
-  //       .login(email: emailController.text, password: passwordController.text)
-  //       .then((message) {
-  //     // Login successful
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => Home()),
-  //     );
-  //   }).catchError((error) {
-  //     // Login failed
-  //     showDialog(
-  //         context: context,
-  //         builder: (context) =>
-  //             CustomDialog(title: 'Error', message: error.toString()));
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -36,23 +17,9 @@ class SignupScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         width: screenWidth,
-        // decoration: BoxDecoration(
-        //   image: DecorationImage(
-        //     image: AssetImage(
-        //         'assets/login_background.png'), // Replace with your actual background image
-        //     fit: BoxFit.cover,
-        //   ),
-        // ),
         child: Container(
           width: screenWidth,
           height: screenHeight,
-          // decoration: BoxDecoration(
-          //   gradient: LinearGradient(colors: [
-          //     Colors.red[800]?.withOpacity(0.7) ?? Colors.red.withOpacity(0.7),
-          //     Colors.black.withOpacity(0.5),
-          //     Colors.blue[800]?.withOpacity(0.7) ?? Colors.blue.withOpacity(0.7)
-          //   ]),
-          // ),
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
