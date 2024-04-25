@@ -26,7 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     void _loginUser() async {
-      print('Inside _loginUser()');
 
       String email = emailController.text;
       String password = passwordController.text;
@@ -35,7 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _exception = 'Both email and password are required!';
         });
-        print('Exception: $_exception');
       }
 
       String message = await AuthService().loginUser(email, password);
@@ -45,12 +43,10 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       } else {
         // no error
-        print('mounted: $mounted');
         if (mounted) {
           context.go('/home'); // redirect it to Home Screen
         }
       }
-      print(message);
     }
 
     return Scaffold(

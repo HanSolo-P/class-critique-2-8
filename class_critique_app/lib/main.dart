@@ -38,7 +38,6 @@ final _router = GoRouter(
     GoRoute(
         path: '/home',
         builder: (context, state) {
-          print('home router called');
           if (FirebaseAuth.instance.currentUser == null) {
             return const LoginScreen();
           } else {

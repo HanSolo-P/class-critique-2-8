@@ -27,7 +27,6 @@ class _SignupScreenState extends State<SignupScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     void _createAccount() async {
-      print('Inside _createAccount()');
 
       String email = emailController.text;
       String password = passwordController.text;
@@ -36,7 +35,6 @@ class _SignupScreenState extends State<SignupScreen> {
         setState(() {
           _exception = 'Both email and password are required!';
         });
-        print('Exception: $_exception');
       }
 
       String message = await AuthService().createAccount(email, password);
@@ -50,7 +48,6 @@ class _SignupScreenState extends State<SignupScreen> {
           context.go('/home'); // redirect it to Home Screen
         }
       }
-      print(message);
     }
 
     return Scaffold(

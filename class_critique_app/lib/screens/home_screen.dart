@@ -25,7 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ElevatedButton(
                 onPressed: () async {
                   await FirebaseAuth.instance.signOut();
-                  print('User signed out.');
 
                   if (mounted) {
                     context.go('/login'); // redirect it to Home Screen
