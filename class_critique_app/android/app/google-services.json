@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "216497577766",
+    "project_id": "class-critique-app",
+    "storage_bucket": "class-critique-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:216497577766:android:aa65c5fd14b90debeaabe7",
+        "android_client_info": {
+          "package_name": "com.example.class_critique_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "dummy"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
