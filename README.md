@@ -14,4 +14,7 @@ Sai Madhava Rao Lakkakula  slakkakula@csuchico.edu
 
 [Design Patterns](https://docs.google.com/document/d/1_35nKeevFehaeTcZq-6Bo61-xF9z4mzzFAqtyF_ThgQ/edit)
 
+[Updated Project Proposal](https://docs.google.com/document/d/1CltNvF9Q3XIxxaSel2evQcWXz2ongtpY/edit?usp=sharing&ouid=117915514765553274668&rtpof=true&sd=true)
+
 [Unit Testing and a Code Coverage Tool](https://docs.google.com/document/d/1K3yP4tRFmbx2pnbcaxszG2P9zEYxSXAAEcwxZtHb6g4/edit#heading=h.f7wphvyclvke)
+
