@@ -5,12 +5,15 @@ import 'package:flutter/material.dart';
 class SignupScreen extends StatelessWidget {
   
   SignupScreen({super.key});
-
+  // TextEditingController to extract text from Text fields of firstname, lastname, email and password
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    // Specify the width and height of the mobile app dynamically
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -23,15 +26,17 @@ class SignupScreen extends StatelessWidget {
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
+              // Scroll view to prevent overflow
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.asset('assets/logo.png'),
+                    Image.asset('assets/logo.png'), // LOGO image of the app
                     SizedBox(height: 16),
+                    // First Name Text Field
                     TextField(
-                      controller: emailController,
-                      style: TextStyle(color: Colors.white),
+                      controller: firstNameController,
+                      style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         labelText: 'Enter the First Name',
                         labelStyle: TextStyle(color: Colors.black),
@@ -52,9 +57,10 @@ class SignupScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16),
+                    // Last Name Text Field
                     TextField(
-                      controller: emailController,
-                      style: TextStyle(color: Colors.white),
+                      controller: lastNameController,
+                      style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         labelText: 'Enter the Last Name',
                         labelStyle: TextStyle(color: Colors.black),
@@ -75,9 +81,10 @@ class SignupScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16),
+                    // Email Text Field
                     TextField(
                       controller: emailController,
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         labelText: 'Enter the email',
                         labelStyle: TextStyle(color: Colors.black),
@@ -98,6 +105,7 @@ class SignupScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16),
+                    // Password Text Field
                     TextField(
                       obscureText: true,
                       controller: passwordController,
@@ -123,6 +131,7 @@ class SignupScreen extends StatelessWidget {
                     child: Center(
                       child: Row(
                         children: [
+                          // Sign Up Button
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () => {},

@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      // Routes for Navigating through the app
       initialRoute: '/login', // Set initial route to login page
       routes: {
         '/login': (context) => LoginScreen(), // Define route for login page

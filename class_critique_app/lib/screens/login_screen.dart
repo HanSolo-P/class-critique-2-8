@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 class LoginScreen extends StatelessWidget {
   
   LoginScreen({super.key});
+  // TextEditingController to extract text from Text fields of email and password
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    // Specify the width and height of the mobile app dynamically
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -23,12 +25,14 @@ class LoginScreen extends StatelessWidget {
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
+              // Scroll view to prevent overflow
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.asset('assets/logo.png'),
+                    Image.asset('assets/logo.png'), // LOGO image of the app
                     SizedBox(height: 16),
+                    // Email Text Field
                     TextField(
                       controller: emailController,
                       style: TextStyle(color: Colors.white),
@@ -52,6 +56,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16),
+                    // Password Text Field
                     TextField(
                       obscureText: true,
                       controller: passwordController,
@@ -73,6 +78,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16),
+                    // Sign in Button
                     Container(
                     child: Center(
                       child: Row(
@@ -99,11 +105,13 @@ class LoginScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        // Navigate to Rest Password page
                         TextButton(
                           onPressed: () {},
                           child: Text('Forget password?',
                               style: TextStyle(color: Colors.black)),
                         ),
+                        // Navigate to Signup page
                         TextButton(
                           onPressed: () => Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => SignupScreen()), (route) => false),
                           child: Text('Signup',
