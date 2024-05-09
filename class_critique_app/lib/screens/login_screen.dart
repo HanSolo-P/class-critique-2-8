@@ -2,6 +2,8 @@
 
 import 'package:class_critique_app/operations/auth_service.dart';
 import 'package:class_critique_app/screens/signup_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,7 +28,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     void _loginUser() async {
-
       String email = emailController.text;
       String password = passwordController.text;
 
@@ -36,12 +37,15 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       }
 
-      String message = await AuthService().loginUser(email, password);
+      String message = await AuthService(
+              auth: FirebaseAuth.instance, database: FirebaseFirestore.instance)
+          .performLogin(email, password);
       if (message.contains('Exception:')) {
         setState(() {
           _exception = message;
         });
       } else {
+        print('Login User: $message');
         // no error
         if (mounted) {
           context.go('/home'); // redirect it to Home Screen
@@ -58,14 +62,14 @@ class _LoginScreenState extends State<LoginScreen> {
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              // Scroll view to prevent overflow			  
+              // Scroll view to prevent overflow
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.asset('assets/logo.png'),
                     SizedBox(height: 16),
-                    // Email Text Field					
+                    // Email Text Field
                     TextField(
                       controller: emailController,
                       style: TextStyle(color: Colors.black),
@@ -77,20 +81,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderSide: BorderSide(color: Colors.black)),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                              color: Colors.black),
+                          borderSide: BorderSide(color: Colors.black),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                              color: Colors.black),
+                          borderSide: BorderSide(color: Colors.black),
                         ),
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 20.0),
                       ),
                     ),
                     SizedBox(height: 16),
-					          // Password Text Field
+                    // Password Text Field
                     TextField(
                       obscureText: true,
                       controller: passwordController,
@@ -100,20 +102,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelStyle: TextStyle(color: Colors.black),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                              color: Colors.black),
+                          borderSide: BorderSide(color: Colors.black),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                              color: Colors.black),
+                          borderSide: BorderSide(color: Colors.black),
                         ),
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 20.0),
                       ),
                     ),
                     SizedBox(height: 16),
-					          // Sign in Button
+                    // Sign in Button
                     Container(
                       child: Center(
                         child: Row(
@@ -129,8 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          10.0),
+                                      borderRadius: BorderRadius.circular(10.0),
                                     ),
                                   ),
                                   backgroundColor:
@@ -156,8 +155,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextButton(
                           onPressed: () {
                             if (mounted) {
-                              context
-                                  .go('/signup'); // redirect it to Signup Screen
+                              context.go(
+                                  '/signup'); // redirect it to Signup Screen
                             }
                           },
                           child: Text('Signup',
@@ -165,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-					          // Display Error if any
+                    // Display Error if any
                     SizedBox(height: 16),
                     _exception.isEmpty
                         ? const SizedBox.shrink()
