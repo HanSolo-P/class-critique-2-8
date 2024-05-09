@@ -4,55 +4,113 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthService {
-  Future<String> createAccount(String email, String password, String fullName,
+  final FirebaseAuth _auth;
+  final FirebaseFirestore _database;
+
+  AuthService({required FirebaseAuth auth, required FirebaseFirestore database})
+      : _auth = auth,
+        _database = database;
+
+  Future<String> performSignup(String email, String password, String fullName,
       String universityName) async {
-      try {
-        bool isEmailExist = await _checkUserExistsInFirestore(email); // check user if it exists in DB
-        if(isEmailExist) {
-          return 'Error: User already exists in Database';
-        }
-      } catch (e) {
-        return '$e';
+    //print('******* Step 1: performSignup called');
+    try {
+      bool doesUserExist = await checkUserExistsInFirestore(email);
+      if (doesUserExist) {
+        //print('***** Error performSignup: doesUserExist');
+        throw UserSaveException('User already exists.');
       }
+
+      UserCredential? userCredential =
+          await _createAccount(email, password, fullName, universityName);
+
+      if (userCredential != null) {
+        //print('******* Step 5: userCredential != null');
+        String message = await saveUser(email, fullName, universityName);
+        return message;
+      } else {
+        throw 'User not Created';
+      }
+    } on UserSaveException catch (e) {
+      print('User Save Exception: ${e.message}');
+      return 'Error: ${e.message}';
+    } catch (e) {
+      print('Error : $e');
+      return 'Error: $e';
+    }
+  }
+
+  Future<String> performLogin(String email, String password) async {
+    try {
+      UserCredential? userCredential = await _login(email, password);
+
+      if (userCredential != null) {
+        if (kDebugMode) {
+          print('User: ${userCredential.user!.email} logged in successfully');
+        }
+        return 'User: ${userCredential.user!.email} logged in successfully';
+      } else {
+        throw 'userCredential is null';
+      }
+    } catch (e) {
+      print('Error : $e');
+      return 'Error: $e';
+    }
+  }
+
+  Future<UserCredential?> createAccount(String email, String password,
+      String fullName, String universityName) async {
     return await _createAccount(email, password, fullName, universityName);
   }
 
-  Future<String> loginUser(String email, String password) async {
+  Future<UserCredential?> loginUser(String email, String password) async {
     return await _login(email, password);
   }
 
+  Future<String> saveUser(
+      String email, String fullName, String universityName) async {
+    //print('******* Step 6: saveUser called');
+    // Save user data to Firestore
+    return await _saveUser(email, fullName, universityName);
+  }
+
+  Future<bool> checkUserExistsInFirestore(String email) async {
+    //print('******* Step 2: checkUserExistsInFirestore called');
+    return await _checkUserExistsInFirestore(
+        email); // check user if it exists in DB
+  }
+
   Future<bool> _checkUserExistsInFirestore(String email) async {
+    //print('******* Step 3: _checkUserExistsInFirestore called');
     try {
-    // Query all documents in the "users" collection
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .get();
+      // Query all documents in the "users" collection
+      QuerySnapshot querySnapshot = await _database.collection('users').get();
 
-    // Iterate through the documents and check the "email" field
-    for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-      // Check if the document's "email" field matches the given email
-      if (doc.get('email') == email) {
-        // User with the given email exists
-        //print('email exists ***********');
-        return true;
+      // Iterate through the documents and check the "email" field
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        // Check if the document's "email" field matches the given email
+        if (doc.get('email') == email) {
+          // User with the given email exists
+          //print('email exists ***********');
+          return true;
+        }
       }
-    }
 
-    // If no matching email is found in any document, the user does not exist
-    return false;
-
+      // If no matching email is found in any document, the user does not exist
+      return false;
     } catch (e) {
       print('Error checking user existence in Firestore: $e');
       throw 'Error checking user existence in Firestore: $e';
     }
   }
 
-  Future<String> _createAccount(String email, String password, String fullName,
-      String universityName) async {
+  Future<UserCredential?> _createAccount(String email, String password,
+      String fullName, String universityName) async {
+    //print('******* Step 4: _createAccount called');
+    UserCredential? userCredential;
     try {
       // Create user with email and password
-      UserCredential userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -60,15 +118,9 @@ class AuthService {
       // Extract the user from the UserCredential
       User? user = userCredential.user;
 
-      // Save user data to Firestore
-      String message = await _saveUser(email, fullName, universityName);
-      if (message.isEmpty) {
-        // logout user if logged in
-        throw UserSaveException('User not saved.');
-      }
-
       print('User ${user!.email} created successfully');
-      return 'Account created successfully';
+      // return 'Account created successfully';
+      return userCredential;
     } on FirebaseAuthException catch (e) {
       String ex = 'Firebase Authentication Exception: ';
       if (e.code == 'email-already-in-use') {
@@ -78,33 +130,37 @@ class AuthService {
       } else {
         ex += 'make sure you are using a valid email';
       }
-      return ex;
+      throw ex;
     } on UserSaveException catch (e) {
       print('User Save Exception: ${e.message}');
-      return 'User Save Exception: ${e.message}';
+      throw 'User Save Exception: ${e.message}';
     } catch (e) {
       print('Exception: $e');
-      return 'An error occurred while creating the account.';
+      throw 'An error occurred while creating the account.';
     }
   }
 
   Future<String> _saveUser(
       String email, String fullName, String universityName) async {
+    //print('_saveUser ${_auth.currentUser}');
     try {
       // Get the current user from Firebase Authentication
-      User? user = FirebaseAuth.instance.currentUser;
+      User? user =
+          _auth.currentUser; // TODO: it can create error during testing
 
       // Check if the user is authenticated
       if (user != null) {
         // Save user data to Firestore
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+        //print('******* Step 7: user != null and Saving user');
+
+        await _database.collection('users').doc(user.uid).set({
           'email': email,
           'fullName': fullName,
           'universityName': universityName,
         });
         return 'User data saved successfully.';
       } else {
-        throw UserSaveException('User not authenticated.');
+        throw 'User not authenticated.';
       }
     } catch (e) {
       print('Error saving user data: $e');
@@ -112,14 +168,17 @@ class AuthService {
     }
   }
 
-  Future<String> _login(String email, String password) async {
+  Future<UserCredential?> _login(String email, String password) async {
+    UserCredential? userCredential;
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      userCredential = await _auth
+          .signInWithEmailAndPassword(
         email: email,
         password: password,
-      );
-
-      return 'Login successfully';
+      )
+          .then((firebaseUser) {
+        return firebaseUser;
+      });
     } on FirebaseAuthException catch (e) {
       String ex = 'Firebase Authentication Exception: ';
       if (e.code == 'invalid-email') {
@@ -127,7 +186,10 @@ class AuthService {
       } else {
         ex += 'check your credentials and try signing in again';
       }
-      return ex;
+      print('Exception: $ex');
+      throw ex;
     }
+
+    return userCredential;
   }
 }
