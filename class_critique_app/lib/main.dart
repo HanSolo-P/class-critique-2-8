@@ -1,6 +1,7 @@
 import 'package:class_critique_app/firebase_options.dart';
 import 'package:class_critique_app/screens/home_screen.dart';
 import 'package:class_critique_app/screens/login_screen.dart';
+import 'package:class_critique_app/screens/professors_screen.dart';
 import 'package:class_critique_app/screens/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,7 +25,7 @@ final _router = GoRouter(
           if (FirebaseAuth.instance.currentUser == null) {
             return const LoginScreen();
           } else {
-            return const HomeScreen();
+            return const ProfessorScreen(); //HomeScreen();
           }
         }),
     GoRoute(
@@ -44,6 +45,10 @@ final _router = GoRouter(
             return const HomeScreen();
           }
         }),
+    GoRoute(
+      path: '/professor',
+      builder: (context, state) => const ProfessorScreen(),
+    ),
   ],
 );
 
@@ -56,7 +61,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
       ),
       routerConfig: _router,

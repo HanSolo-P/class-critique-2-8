@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:class_critique_app/operations/auth_service.dart';
-import 'package:class_critique_app/screens/signup_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
         print('Login User: $message');
         // no error
         if (mounted) {
-          context.go('/home'); // redirect it to Home Screen
+          context.go('/professor'); // redirect it to Home Screen
         }
       }
     }
