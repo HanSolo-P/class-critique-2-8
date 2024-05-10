@@ -1,12 +1,14 @@
 import 'package:class_critique_app/screens/login_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
   final FirebaseAuth auth;
+  final FirebaseFirestore database;
 
-  const HomeScreen({super.key, required this.auth});
+  const HomeScreen({super.key, required this.auth, required this.database});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -36,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => LoginScreen()));
+                          builder: (context) => LoginScreen(auth: widget.auth, database: widget.database,)));
                 },
                 child: Text(
                   'Sign Out',

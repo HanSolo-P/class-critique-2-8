@@ -1,13 +1,17 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:class_critique_app/operations/auth_service.dart';
+import 'package:class_critique_app/screens/professors_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final FirebaseAuth auth;
+  final FirebaseFirestore database;
+
+  const LoginScreen({super.key, required this.auth, required this.database});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -37,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       String message = await AuthService(
-              auth: FirebaseAuth.instance, database: FirebaseFirestore.instance)
+              auth: widget.auth, database: widget.database)
           .performLogin(email, password);
       if (message.contains('Exception:')) {
         setState(() {
@@ -46,9 +50,10 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         print('Login User: $message');
         // no error
-        if (mounted) {
-          context.go('/professor'); // redirect it to Home Screen
-        }
+         Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProfessorScreen(database: widget.database,)));
       }
     }
 
@@ -70,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: 16),
                     // Email Text Field
                     TextField(
+                      key: const Key("emailField"),
                       controller: emailController,
                       style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
@@ -93,6 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: 16),
                     // Password Text Field
                     TextField(
+                      key: const Key("passwordField"),
                       obscureText: true,
                       controller: passwordController,
                       style: TextStyle(color: Colors.black),
@@ -119,6 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             Expanded(
                               child: ElevatedButton(
+                                key: const Key("loginButton"),
                                 onPressed: () => _loginUser(),
                                 child: Text(
                                   'Sign In',

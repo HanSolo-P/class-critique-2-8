@@ -1,6 +1,7 @@
-
 import 'package:class_critique_app/screens/home_screen.dart';
 import 'package:class_critique_app/screens/login_screen.dart';
+import 'package:class_critique_app/screens/professors_screen.dart';
+import 'package:class_critique_app/screens/signup_screen.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/material.dart';
@@ -20,26 +21,27 @@ void main() {
   final _mockAuth = MockFirebaseAuth(signedIn: true, mockUser: _mockUser);
   final firestore = FakeFirebaseFirestore();
 
-  group('Logout Page Tests', () {
+  group('Signup Page Tests', () {
     testWidgets('Check level page widget and ui loading',
         (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(home: HomeScreen(auth: _mockAuth, database: firestore)));
+      await tester.pumpWidget(MaterialApp(home: SignupScreen(auth: _mockAuth, database: firestore,)));
 
-      expect(find.text('Sign Out'), findsOneWidget);
+      expect(find.text('Sign Up'), findsOneWidget);
 
       //find the beginner button
-      final logoutButton = find.byKey(const ValueKey("logoutButton"));
+      final signupButton = find.byKey(const ValueKey("signupButton"));
 
       //make sure button is found
-      expect(logoutButton, findsOneWidget);
+      expect(signupButton, findsOneWidget);
       //press button
-      await tester.tap(logoutButton);
+      await tester.tap(signupButton);
 
       //give time to settle on new page
       await tester.pumpAndSettle();
 
       //find the fitness page widget which confirms we are on fitness page
-      expect(find.byType(LoginScreen), findsOneWidget);
+      expect(find.byType(HomeScreen), findsOneWidget);
+      
     });
   });
 }

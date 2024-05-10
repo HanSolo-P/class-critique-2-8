@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:class_critique_app/operations/db_operations.dart';
-//import 'package:class_critique_app/screens/add_review_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -34,7 +33,7 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
 
   @override
   void initState() {
-    dataMap = DBOperations(database: _database ).fetchProfessor(professorId);
+    dataMap = DBOperations(database: _database).fetchProfessor(professorId);
     super.initState();
 
     _fetchData();
@@ -183,14 +182,14 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
                 return Column(
                   children: [
                     // Image at the top
-                    // ClipOval(
-                    //   child: Image.network(
-                    //     professorData['professorImage'],
-                    //     width: 120, // Adjust the width as needed
-                    //     height: 120, // Adjust the height as needed
-                    //     fit: BoxFit.cover, // Adjust the BoxFit as needed
-                    //   ),
-                    // ),
+                    ClipOval(
+                      child: Image.network(
+                        professorData['professorImage'],
+                        width: 120, // Adjust the width as needed
+                        height: 120, // Adjust the height as needed
+                        fit: BoxFit.cover, // Adjust the BoxFit as needed
+                      ),
+                    ),
                     SizedBox(height: 4),
                     Text(
                       professorData['professorName'],

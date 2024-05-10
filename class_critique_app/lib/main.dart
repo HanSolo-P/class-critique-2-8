@@ -24,27 +24,27 @@ final _router = GoRouter(
         path: '/',
         builder: (context, state) {
           if (FirebaseAuth.instance.currentUser == null) {
-            return const LoginScreen();
+            return LoginScreen(auth: FirebaseAuth.instance, database: FirebaseFirestore.instance);
           } else {
             final databases = FirebaseFirestore.instance;
-            return ProfessorScreen(database: databases, ); //HomeScreen();
+            return ProfessorScreen(database: databases);
           }
         }),
     GoRoute(
       path: '/signup',
-      builder: (context, state) => const SignupScreen(),
+      builder: (context, state) => SignupScreen(auth: FirebaseAuth.instance, database: FirebaseFirestore.instance),
     ),
     GoRoute(
       path: '/login',
-      builder: (context, state) => const LoginScreen(),
+      builder: (context, state) => LoginScreen(auth: FirebaseAuth.instance, database: FirebaseFirestore.instance)
     ),
     GoRoute(
         path: '/home',
         builder: (context, state) {
           if (FirebaseAuth.instance.currentUser == null) {
-            return const LoginScreen();
+            return LoginScreen(auth: FirebaseAuth.instance, database: FirebaseFirestore.instance);
           } else {
-            return const HomeScreen();
+            return HomeScreen(auth: FirebaseAuth.instance, database: FirebaseFirestore.instance);
           }
         }),
     GoRoute(

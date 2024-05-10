@@ -1,13 +1,17 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:class_critique_app/operations/auth_service.dart';
+import 'package:class_critique_app/screens/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+  final FirebaseAuth auth;
+  final FirebaseFirestore database;
+
+  const SignupScreen({super.key, required this.auth, required this.database}); 
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -47,7 +51,7 @@ class _SignupScreenState extends State<SignupScreen> {
       String universityName = universityNameController.text;
 
       String message = await AuthService(
-              auth: FirebaseAuth.instance, database: FirebaseFirestore.instance)
+              auth: widget.auth, database: widget.database)
           .performSignup(email, password, fullName, universityName);
 
       if (message.toLowerCase().contains('exception') ||
@@ -55,15 +59,16 @@ class _SignupScreenState extends State<SignupScreen> {
         setState(() {
           _exception = message;
         });
-        if (FirebaseAuth.instance.currentUser != null) {
+        if (widget.auth.currentUser != null) {
           print('current user is empty');
-          await FirebaseAuth.instance.signOut(); // logout
+          await widget.auth.signOut(); // logout
         }
       } else {
         // no error
-        if (mounted) {
-          context.go('/home'); // redirect it to Home Screen
-        }
+        Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomeScreen(auth: widget.auth , database: widget.database,)));
         print('Signup Successful: $message');
       }
     }
@@ -204,6 +209,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             // Sign Up Button
                             Expanded(
                               child: ElevatedButton(
+                                key: const Key("signupButton"),
                                 //onPressed: () => {},
                                 onPressed: () => _createAccount(),
                                 child: Text(
