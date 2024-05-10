@@ -13,11 +13,9 @@ class AuthService {
 
   Future<String> performSignup(String email, String password, String fullName,
       String universityName) async {
-    //print('******* Step 1: performSignup called');
     try {
       bool doesUserExist = await checkUserExistsInFirestore(email);
       if (doesUserExist) {
-        //print('***** Error performSignup: doesUserExist');
         throw UserSaveException('User already exists.');
       }
 
@@ -25,7 +23,6 @@ class AuthService {
           await _createAccount(email, password, fullName, universityName);
 
       if (userCredential != null) {
-        //print('******* Step 5: userCredential != null');
         String message = await saveUser(email, fullName, universityName);
         return message;
       } else {
@@ -69,19 +66,17 @@ class AuthService {
 
   Future<String> saveUser(
       String email, String fullName, String universityName) async {
-    //print('******* Step 6: saveUser called');
     // Save user data to Firestore
     return await _saveUser(email, fullName, universityName);
   }
 
   Future<bool> checkUserExistsInFirestore(String email) async {
-    //print('******* Step 2: checkUserExistsInFirestore called');
     return await _checkUserExistsInFirestore(
         email); // check user if it exists in DB
   }
 
   Future<bool> _checkUserExistsInFirestore(String email) async {
-    //print('******* Step 3: _checkUserExistsInFirestore called');
+
     try {
       // Query all documents in the "users" collection
       QuerySnapshot querySnapshot = await _database.collection('users').get();
@@ -91,7 +86,6 @@ class AuthService {
         // Check if the document's "email" field matches the given email
         if (doc.get('email') == email) {
           // User with the given email exists
-          //print('email exists ***********');
           return true;
         }
       }
@@ -106,7 +100,6 @@ class AuthService {
 
   Future<UserCredential?> _createAccount(String email, String password,
       String fullName, String universityName) async {
-    //print('******* Step 4: _createAccount called');
     UserCredential? userCredential;
     try {
       // Create user with email and password
@@ -142,7 +135,6 @@ class AuthService {
 
   Future<String> _saveUser(
       String email, String fullName, String universityName) async {
-    //print('_saveUser ${_auth.currentUser}');
     try {
       // Get the current user from Firebase Authentication
       User? user =
@@ -151,7 +143,7 @@ class AuthService {
       // Check if the user is authenticated
       if (user != null) {
         // Save user data to Firestore
-        //print('******* Step 7: user != null and Saving user');
+
 
         await _database.collection('users').doc(user.uid).set({
           'email': email,

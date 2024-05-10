@@ -32,9 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () async {
                   await widget.auth.signOut();
 
-                  // if (mounted) {
-                  //   context.go('/login'); // redirect it to Home Screen
-                  // }
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(

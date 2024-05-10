@@ -20,7 +20,7 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
   bool isLoading = false;
   late Stream<QuerySnapshot> _ratingsStream;
   late Future<Map<String, dynamic>?>
-  dataMap; // = DBOperations.fetchProfessor(professorId);
+  dataMap;
 
   late String dropdownValue1 = 'All Courses';
   String dropdownValue2 = 'Sort by';
