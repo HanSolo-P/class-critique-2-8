@@ -1,8 +1,10 @@
 import 'package:class_critique_app/firebase_options.dart';
 import 'package:class_critique_app/screens/home_screen.dart';
 import 'package:class_critique_app/screens/login_screen.dart';
+import 'package:class_critique_app/screens/professors_screen.dart';
 import 'package:class_critique_app/screens/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -22,28 +24,33 @@ final _router = GoRouter(
         path: '/',
         builder: (context, state) {
           if (FirebaseAuth.instance.currentUser == null) {
-            return const LoginScreen();
+            return LoginScreen(auth: FirebaseAuth.instance, database: FirebaseFirestore.instance);
           } else {
-            return const HomeScreen();
+            final databases = FirebaseFirestore.instance;
+            return ProfessorScreen(database: databases);
           }
         }),
     GoRoute(
       path: '/signup',
-      builder: (context, state) => const SignupScreen(),
+      builder: (context, state) => SignupScreen(auth: FirebaseAuth.instance, database: FirebaseFirestore.instance),
     ),
     GoRoute(
       path: '/login',
-      builder: (context, state) => const LoginScreen(),
+      builder: (context, state) => LoginScreen(auth: FirebaseAuth.instance, database: FirebaseFirestore.instance)
     ),
     GoRoute(
         path: '/home',
         builder: (context, state) {
           if (FirebaseAuth.instance.currentUser == null) {
-            return const LoginScreen();
+            return LoginScreen(auth: FirebaseAuth.instance, database: FirebaseFirestore.instance);
           } else {
-            return const HomeScreen();
+            return HomeScreen(auth: FirebaseAuth.instance, database: FirebaseFirestore.instance);
           }
         }),
+    GoRoute(
+      path: '/professor',
+      builder: (context, state) => ProfessorScreen(database: FirebaseFirestore.instance,),
+    ),
   ],
 );
 
@@ -56,7 +63,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
       ),
       routerConfig: _router,
