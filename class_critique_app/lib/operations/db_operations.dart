@@ -1,11 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DBOperations {
-  static Future<Map<String, dynamic>?> fetchProfessor(String professorId) async {
+
+   final FirebaseFirestore _database;
+
+   DBOperations({required FirebaseFirestore database})
+      : _database = database;
+
+ Future<Map<String, dynamic>?> fetchProfessor(String professorId) async {
     try {
       // Get the collection reference for the provided professorId
       CollectionReference<Map<String, dynamic>> professorCollectionRef =
-          FirebaseFirestore.instance.collection("professors");
+          _database.collection("professors");
 
       // Retrieve the document snapshot
       DocumentSnapshot<Map<String, dynamic>> snapshot =
@@ -34,7 +40,7 @@ class DBOperations {
     }
   }
 
-  static Future<void> fetchRatings(
+ Future<void> fetchRatings(
       CollectionReference<Map<String, dynamic>> ratingsRef) async {
     print('Inside fetchRatings()');
     try {
@@ -60,9 +66,4 @@ class DBOperations {
       throw error;
     }
   }
-}
-
-void main() {
-  String professorId = '7L7NgTqIZQifi8w14OrF';
-  DBOperations.fetchProfessor(professorId);
 }

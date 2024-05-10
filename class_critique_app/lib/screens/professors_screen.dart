@@ -25,7 +25,7 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
 
   @override
   void initState() {
-    dataMap = DBOperations.fetchProfessor(professorId);
+    dataMap = DBOperations(database: FirebaseFirestore.instance).fetchProfessor(professorId);
     super.initState();
 
     _fetchData();
@@ -42,7 +42,7 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
       isLoading = true; // Set loading state to true
     });
     try {
-      dataMap = DBOperations.fetchProfessor(professorId);
+      dataMap = DBOperations(database: FirebaseFirestore.instance).fetchProfessor(professorId);
     } catch (error) {
       // Handle error, show error message, etc.
       print('Error fetching professor: $error');
