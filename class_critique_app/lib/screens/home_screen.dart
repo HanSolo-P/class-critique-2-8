@@ -1,9 +1,12 @@
+import 'package:class_critique_app/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final FirebaseAuth auth;
+
+  const HomeScreen({super.key, required this.auth});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -23,13 +26,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 32,
               ),
               ElevatedButton(
+                key: const Key("logoutButton"),
                 onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
+                  await widget.auth.signOut();
 
-                  if (mounted) {
-                    context.go('/login'); // redirect it to Home Screen
-                  }
-
+                  // if (mounted) {
+                  //   context.go('/login'); // redirect it to Home Screen
+                  // }
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LoginScreen()));
                 },
                 child: Text(
                   'Sign Out',
