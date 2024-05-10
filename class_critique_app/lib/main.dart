@@ -4,6 +4,7 @@ import 'package:class_critique_app/screens/login_screen.dart';
 import 'package:class_critique_app/screens/professors_screen.dart';
 import 'package:class_critique_app/screens/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -25,7 +26,8 @@ final _router = GoRouter(
           if (FirebaseAuth.instance.currentUser == null) {
             return const LoginScreen();
           } else {
-            return const ProfessorScreen(); //HomeScreen();
+            final databases = FirebaseFirestore.instance;
+            return ProfessorScreen(database: databases, ); //HomeScreen();
           }
         }),
     GoRoute(
@@ -47,7 +49,7 @@ final _router = GoRouter(
         }),
     GoRoute(
       path: '/professor',
-      builder: (context, state) => const ProfessorScreen(),
+      builder: (context, state) => ProfessorScreen(database: FirebaseFirestore.instance,),
     ),
   ],
 );

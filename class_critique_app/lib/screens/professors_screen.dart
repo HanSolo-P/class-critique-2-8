@@ -1,15 +1,19 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:class_critique_app/operations/db_operations.dart';
+//import 'package:class_critique_app/screens/add_review_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ProfessorScreen extends StatefulWidget {
-  const ProfessorScreen({Key? key}) : super(key: key);
+   final FirebaseFirestore _database;
+  const ProfessorScreen({required FirebaseFirestore database, Key? key})
+      : _database = database, super(key: key);
+
 
   @override
-  State<ProfessorScreen> createState() => _ProfessorScreenState();
+  State<ProfessorScreen> createState() => _ProfessorScreenState(_database);
 }
 
 class _ProfessorScreenState extends State<ProfessorScreen> {
@@ -17,22 +21,27 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
   bool isLoading = false;
   late Stream<QuerySnapshot> _ratingsStream;
   late Future<Map<String, dynamic>?>
-      dataMap; // = DBOperations.fetchProfessor(professorId);
+  dataMap; // = DBOperations.fetchProfessor(professorId);
 
   late String dropdownValue1 = 'All Courses';
   String dropdownValue2 = 'Sort by';
   List<String> subjectTaught = [];
 
+  final FirebaseFirestore _database;
+  _ProfessorScreenState(FirebaseFirestore database):
+      _database = database;
+
+
   @override
   void initState() {
-    dataMap = DBOperations(database: FirebaseFirestore.instance).fetchProfessor(professorId);
+    dataMap = DBOperations(database: _database ).fetchProfessor(professorId);
     super.initState();
 
     _fetchData();
   }
 
   Future<void> _fetchData() async {
-    _ratingsStream = FirebaseFirestore.instance
+    _ratingsStream = _database
         .collection('professors')
         .doc(professorId)
         .collection("ratings")
@@ -42,7 +51,7 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
       isLoading = true; // Set loading state to true
     });
     try {
-      dataMap = DBOperations(database: FirebaseFirestore.instance).fetchProfessor(professorId);
+      dataMap = DBOperations(database: _database).fetchProfessor(professorId);
     } catch (error) {
       // Handle error, show error message, etc.
       print('Error fetching professor: $error');
@@ -57,7 +66,7 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
       // Reset the ratings stream
       setState(() {
         dropdownValue1 = newValue;
-        _ratingsStream = FirebaseFirestore.instance
+        _ratingsStream = _database
             .collection('professors')
             .doc(professorId)
             .collection("ratings")
@@ -66,7 +75,7 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
     } else {
       setState(() {
         dropdownValue1 = newValue;
-        _ratingsStream = FirebaseFirestore.instance
+        _ratingsStream = _database
             .collection('professors')
             .doc(professorId)
             .collection("ratings")
@@ -84,7 +93,7 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
       // Reset the ratings stream
       setState(() {
         dropdownValue2 = newValue;
-        _ratingsStream = FirebaseFirestore.instance
+        _ratingsStream = _database
             .collection('professors')
             .doc(professorId)
             .collection("ratings")
@@ -94,7 +103,7 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
       // Reset the ratings stream
       setState(() {
         dropdownValue2 = newValue;
-        _ratingsStream = FirebaseFirestore.instance
+        _ratingsStream = _database
             .collection('professors')
             .doc(professorId)
             .collection("ratings")
@@ -105,7 +114,7 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
       // Reset the ratings stream
       setState(() {
         dropdownValue2 = newValue;
-        _ratingsStream = FirebaseFirestore.instance
+        _ratingsStream = _database
             .collection('professors')
             .doc(professorId)
             .collection("ratings")
@@ -115,7 +124,7 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
     } else if (newValue == 'Earliest Date') {
       setState(() {
         dropdownValue2 = newValue;
-        _ratingsStream = FirebaseFirestore.instance
+        _ratingsStream = _database
             .collection('professors')
             .doc(professorId)
             .collection("ratings")
@@ -125,7 +134,7 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
     } else if (newValue == 'Latest Date') {
       setState(() {
         dropdownValue2 = newValue;
-        _ratingsStream = FirebaseFirestore.instance
+        _ratingsStream = _database
             .collection('professors')
             .doc(professorId)
             .collection("ratings")
@@ -162,8 +171,6 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
               } else {
                 // Professor details
                 final professorData = snapshot.data!;
-                print('professorData $professorData');
-                print(professorData['subjectsTaught'].runtimeType);
                 List<dynamic> subjectsTaught =
                     snapshot.data!['subjectsTaught'] ?? [];
 
@@ -176,14 +183,14 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
                 return Column(
                   children: [
                     // Image at the top
-                    ClipOval(
-                      child: Image.network(
-                        professorData['professorImage'],
-                        width: 120, // Adjust the width as needed
-                        height: 120, // Adjust the height as needed
-                        fit: BoxFit.cover, // Adjust the BoxFit as needed
-                      ),
-                    ),
+                    // ClipOval(
+                    //   child: Image.network(
+                    //     professorData['professorImage'],
+                    //     width: 120, // Adjust the width as needed
+                    //     height: 120, // Adjust the height as needed
+                    //     fit: BoxFit.cover, // Adjust the BoxFit as needed
+                    //   ),
+                    // ),
                     SizedBox(height: 4),
                     Text(
                       professorData['professorName'],
@@ -264,14 +271,14 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
                               },
                               items: (professorData['subjectsTaught'] != null)
                                   ? (professorData['subjectsTaught']!
-                                          as List<dynamic>)
-                                      .map<DropdownMenuItem<String>>(
-                                          (dynamic value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value.toString(),
-                                        child: Text(value),
-                                      );
-                                    }).toList()
+                              as List<dynamic>)
+                                  .map<DropdownMenuItem<String>>(
+                                      (dynamic value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value.toString(),
+                                      child: Text(value),
+                                    );
+                                  }).toList()
                                   : [],
                               underline: null,
                             ),
@@ -338,12 +345,12 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
                                   itemBuilder: (context, index) {
                                     var document = snapshot.data!.docs[index];
                                     var rating =
-                                        document.data() as Map<String, dynamic>;
+                                    document.data() as Map<String, dynamic>;
                                     Timestamp timestamp = rating['time'];
                                     DateTime dateTime = timestamp.toDate();
                                     String formattedTime =
-                                        DateFormat('MMM dd, yyyy, HH:mm')
-                                            .format(dateTime);
+                                    DateFormat('MMM dd, yyyy, HH:mm')
+                                        .format(dateTime);
 
                                     return Padding(
                                       padding: EdgeInsets.all(8),
@@ -352,12 +359,12 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
                                         child: ListTile(
                                           title: Column(
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                MainAxisAlignment
+                                                    .spaceBetween,
                                                 children: [
                                                   Text(rating['subject']),
                                                   Text(formattedTime),
@@ -409,12 +416,27 @@ class _ProfessorScreenState extends State<ProfessorScreen> {
           ),
         ),
       ),
+      floatingActionButton: SizedBox(
+        height: 60,
+        width: 60,
+        child: FloatingActionButton(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(100))),
+          child: Icon(Icons.add, color: Colors.white),
+          backgroundColor: Color(0xff0095FF),
+          elevation: 20,
+          onPressed: () {
+            /*
+            showModalBottomSheet(
+                context: context,
+                builder: (context) => // AddReviewScreen(
+//                      app: widget.app,
+                ));*/
+          },
+        ),
+      ),
     );
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: ProfessorScreen(),
-  ));
-}
+
