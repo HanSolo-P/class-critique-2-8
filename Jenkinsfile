@@ -16,13 +16,19 @@ pipeline {
         
         stage('Install Dependencies') {
             steps {
-                sh 'flutter pub get'
+                bat 'flutter pub get'
+            }
+        }
+        
+        stage('Run Tests') {
+            steps {
+                bat 'flutter test'
             }
         }
         
         stage('Build APK') {
             steps {
-                sh 'flutter build apk --release'
+                bat 'flutter build apk --release'
             }
         }
     }
