@@ -7,12 +7,6 @@ pipeline {
         git 'Default'
     }
     
-    environment {
-        // Define environment variables
-        FLUTTER_HOME = 'C:\\fluttersdk\\flutter'
-        PATH = "$FLUTTER_HOME\\bin:$PATH"
-    }
-    
     stages {
         stage('Checkout') {
             steps {
